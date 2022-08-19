@@ -14,11 +14,14 @@ int main()
     float mapRotation = 0.0;
     float mapScale = 4.0;
 
+    SetTargetFPS(60);
     bool running = true;
 
     //Main game loop
     while(running)
     {
+        const float DELTA_TIME = GetFrameTime();
+
         if(WindowShouldClose())
         {
             running = false;
