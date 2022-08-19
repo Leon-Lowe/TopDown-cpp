@@ -3,7 +3,7 @@
 class Character
 {
 public:
-    Character();
+    Character(float windowWidth, float windowHeight);
 
     Vector2 GetWorldPositon() {return worldPosition;}
     Vector2 GetScreenPosition() {return screenPosition;}
@@ -16,16 +16,21 @@ public:
     float GetRunningTime() {return runningTime;}
     float GetUpdateTime() {return updateTime;}
 
-    void SetScreenPosition(int windowWidth, int windowHeight);
-
     void Tick(float deltaTime);
+    void UndoMovement();
 
 private:
+    Vector2 GetInput();
+    void Move(Vector2 moveDir);
+    void Animate(float deltaTime);
+    void Draw();
+
     Texture2D texture{LoadTexture("characters/knight_idle_spritesheet.png")};
     Texture2D idle{LoadTexture("characters/knight_idle_spritesheet.png")};
     Texture2D run{LoadTexture("characters/knight_run_spritesheet.png")};
     Vector2 screenPosition{};
     Vector2 worldPosition{};
+    Vector2 worldPositionLastFrame{};
     float scale = 4.0f;
     float width = 0.0f;
     float height = 0.0f;
