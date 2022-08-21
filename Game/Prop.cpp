@@ -8,6 +8,17 @@ Prop::Prop(Vector2 pos, Texture2D tex) :
 
 }
 
+Rectangle Prop::GetCollisionRectangle(Vector2 playerPosition)
+{
+    Vector2 screenPosition = Vector2Subtract(worldPosition, playerPosition);
+    return Rectangle{
+        screenPosition.x,
+        screenPosition.y,
+        texture.width * scale,
+        texture.height * scale
+    };
+}
+
 void Prop::Draw(Vector2 playerPosition)
 {
     Vector2 screenPosition = Vector2Subtract(worldPosition, playerPosition);

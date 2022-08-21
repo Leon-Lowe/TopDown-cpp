@@ -65,6 +65,15 @@ int main()
             player.UndoMovement();
         }
 
+        //Check prop collisions
+        for(Prop prop : props)
+        {
+            if(CheckCollisionRecs(prop.GetCollisionRectangle(player.GetWorldPositon()), player.GetCollisionRectangle()))
+            {
+                player.UndoMovement();
+            }
+        }
+
         EndDrawing();
     }
     CloseWindow();

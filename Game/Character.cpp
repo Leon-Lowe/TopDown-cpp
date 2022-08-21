@@ -12,6 +12,16 @@ Character::Character(float windowWidth, float windowHeight)
     height = texture.height;
 }
 
+Rectangle Character::GetCollisionRectangle()
+{
+    return Rectangle{
+        screenPosition.x,
+        screenPosition.y,
+        width * scale,
+        height * scale
+    };
+}
+
 void Character::Tick(float deltaTime)
 {
     Vector2 moveDir = GetInput();

@@ -15,6 +15,7 @@ public:
     int GetMaxFrames() {return maxFrames;}
     float GetRunningTime() {return runningTime;}
     float GetUpdateTime() {return updateTime;}
+    Rectangle GetCollisionRectangle();
 
     void Tick(float deltaTime);
     void UndoMovement();
