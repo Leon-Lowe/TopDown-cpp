@@ -1,6 +1,7 @@
 #include "raylib.h"
 #include "raymath.h"
 #include "Character.h"
+#include "Enemy.h"
 #include "Prop.h"
 
 int main()
@@ -18,7 +19,16 @@ int main()
     float mapScale = 4.0f;
 
     //Initialise player
-    Character player{WINDOW_DIMENSIONS.x, WINDOW_DIMENSIONS.y};
+    Character player{WINDOW_DIMENSIONS};
+
+    //Initialse enemies
+    Enemy goblin{
+        Vector2{1000.0f, 1000.0f},
+        LoadTexture("characters/goblin_idle_spritesheet.png"),
+        LoadTexture("characters/goblin_run_spritesheet.png"),
+        3.5f
+    };
+    goblin.SetTarget(&player);
 
     //Initialise props
     Prop props[2]{
@@ -55,6 +65,7 @@ int main()
         }
 
         player.Tick(DELTA_TIME);
+        goblin.Tick(DELTA_TIME);
 
         //Check map bounds
         if(player.GetWorldPositon().x < 0.0f ||
