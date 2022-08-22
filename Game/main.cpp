@@ -3,6 +3,7 @@
 #include "Character.h"
 #include "Enemy.h"
 #include "Prop.h"
+#include <string>
 
 int main()
 {
@@ -19,16 +20,38 @@ int main()
     float mapScale = 4.0f;
 
     //Initialise player
-    Character player{WINDOW_DIMENSIONS};
+    Character player{WINDOW_DIMENSIONS, 35, 0.2f};
 
     //Initialse enemies
     Enemy goblin{
         Vector2{1000.0f, 1000.0f},
         LoadTexture("characters/goblin_idle_spritesheet.png"),
         LoadTexture("characters/goblin_run_spritesheet.png"),
-        3.5f
+        3.5f,
+        50,
+        10,
+        1.0f
     };
-    goblin.SetTarget(&player);
+
+    Enemy slime{
+        Vector2{1500.0f, 500.0f},
+        LoadTexture("characters/slime_idle_spritesheet.png"),
+        LoadTexture("characters/slime_run_spritesheet.png"),
+        5.0f,
+        75,
+        5,
+        0.7f
+    };
+
+    Enemy* enemies[]{
+        &goblin,
+        &slime
+    };
+
+    for(Enemy* enemy : enemies)
+    {
+        enemy->SetTarget(&player);
+    }
 
     //Initialise props
     Prop props[2]{
@@ -64,8 +87,25 @@ int main()
             prop.Draw(player.GetWorldPositon());
         }
 
+        if(player.GetAlive())
+        {
+            std::string healthText = "Health: ";
+            healthText.append(std::to_string(player.GetHealth()));
+            DrawText(healthText.c_str(), 5, 5, 40, GREEN);
+        }
+        else
+        {
+            DrawText("Game Over!", 200.0f, 300.0f, 160, RED);
+            EndDrawing();
+            continue;
+        }
+
         player.Tick(DELTA_TIME);
-        goblin.Tick(DELTA_TIME);
+        
+        for(Enemy* enemy : enemies)
+        {
+            enemy->Tick(DELTA_TIME);
+        }
 
         //Check map bounds
         if(player.GetWorldPositon().x < 0.0f ||
@@ -82,6 +122,18 @@ int main()
             if(CheckCollisionRecs(prop.GetCollisionRectangle(player.GetWorldPositon()), player.GetCollisionRectangle()))
             {
                 player.UndoMovement();
+            }
+        }
+
+        //Check player attacking
+        if(player.GetAttacking())
+        {
+            for(Enemy* enemy : enemies)
+            {
+                if(CheckCollisionRecs(enemy->GetCollisionRectangle(), player.GetWeaponCollisionRect()))
+                {
+                    enemy->Damage(player.GetAttackDamage());
+                }
             }
         }
 

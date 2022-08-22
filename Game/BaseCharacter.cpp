@@ -10,6 +10,8 @@ void BaseCharacter::Tick(float deltaTime)
 {
     Animate(deltaTime);
     Draw();
+
+    attackTimer += deltaTime;
 }
 
 void BaseCharacter::Move()
@@ -41,7 +43,7 @@ void BaseCharacter::Draw()
 {
     Rectangle playerSource{width * frame, 0.0f, rightLeft * width, height};
     Rectangle playerDest{screenPosition.x, screenPosition.y, scale * width, scale * height};
-    Vector2 origin{0.0f, 0.0f};
+    Vector2 origin{width/2.0f, height/2.0f};
     DrawTexturePro(texture, playerSource, playerDest, origin, 0.0f, WHITE);
 }
 

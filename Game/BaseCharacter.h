@@ -21,6 +21,22 @@ public:
     float GetRunningTime() {return runningTime;}
     float GetUpdateTime() {return updateTime;}
 
+    bool GetAlive() {return alive;}
+    void SetAlive(bool isAlive) {alive = isAlive;}
+
+    int GetHealth() {return health;}
+    void SetHealth(int newHealth) {health = newHealth;}
+    void Damage(int damageAmount) {health -= damageAmount; CheckForDead();}
+    void Heal(int healAmount) {health += healAmount;}
+
+    void CheckForDead() {if(health <= 0) {alive = false;}}
+
+    int GetAttackDamage() {return attackDamage;}
+    void SetAttackDamage(int damage) {attackDamage = damage;}
+
+    float GetTimeBetweenAttacks() {return timeBetweenAttacks;}
+    void SetTimeBetweenAttacks(float time) {timeBetweenAttacks = time;}
+
     Rectangle GetCollisionRectangle();
     
     virtual void Tick(float deltaTime);
@@ -51,6 +67,13 @@ protected:
     int frame = 0;
     int maxFrames = 6;
     float updateTime = 1.0f / 12.0f;
+
+    float attackTimer = 0.0f;
+private:
+    int health = 100;
+    bool alive = true;
+    int attackDamage = 10;
+    float timeBetweenAttacks = 1.0f;
 };
 
 #endif
